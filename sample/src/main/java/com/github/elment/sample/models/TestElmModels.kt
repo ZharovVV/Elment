@@ -1,4 +1,4 @@
-package com.github.elment.models
+package com.github.elment.sample.models
 
 data class TestState(
     val str: String

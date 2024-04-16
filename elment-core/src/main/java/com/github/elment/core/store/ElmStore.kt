@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
@@ -32,7 +33,8 @@ internal class StoreImpl<UiState : Any, InternalState : Any, Effect : Any, Comma
     private val initialState: InternalState,
     private val reducer: Reducer<InternalState, Effect, Event>,
     private val operationProcessor: OperationProcessor<Command, Event>,
-    stateMapper: StateMapper<InternalState, UiState>
+    stateMapper: StateMapper<InternalState, UiState>,
+    throttlingConfig: ThrottlingConfig
 ) : Store<UiState, Effect, Event> {
 
     private val storeScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
@@ -55,6 +57,7 @@ internal class StoreImpl<UiState : Any, InternalState : Any, Effect : Any, Comma
 
     private val defaultUiEvents = MutableSharedFlow<Event>()
     private val debounceUiEvents = MutableSharedFlow<Event>()
+    private val throttledUiEvents = MutableSharedFlow<Event>()
     private val dropOldestUiEvents = MutableSharedFlow<Event>(
         extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
@@ -64,7 +67,8 @@ internal class StoreImpl<UiState : Any, InternalState : Any, Effect : Any, Comma
     @OptIn(FlowPreview::class)
     private val events: Flow<Event> = merge(
         defaultUiEvents,
-        debounceUiEvents.debounce(300),
+        debounceUiEvents.debounce(1000),
+        throttledUiEvents.throttleFirst(1000),
         dropOldestUiEvents,
         internalEvents
     )
@@ -74,6 +78,7 @@ internal class StoreImpl<UiState : Any, InternalState : Any, Effect : Any, Comma
             AcceptMode.DEFAULT -> storeScope.launch { defaultUiEvents.emit(event) }
             AcceptMode.DROP_OLDEST -> dropOldestUiEvents.tryEmit(event)
             AcceptMode.DEBOUNCE -> storeScope.launch { debounceUiEvents.emit(event) }
+            AcceptMode.THROTTLE -> storeScope.launch { throttledUiEvents.emit(event) }
         }
     }
 
@@ -99,18 +104,31 @@ internal class StoreImpl<UiState : Any, InternalState : Any, Effect : Any, Comma
     }
 }
 
+private fun <T> Flow<T>.throttleFirst(windowDuration: Long): Flow<T> = flow {
+    var lastTime = 0L
+    collect { value ->
+        val currentTime = System.currentTimeMillis()
+        if (currentTime - lastTime >= windowDuration) {
+            lastTime = currentTime
+            emit(value)
+        }
+    }
+}
+
 @Suppress("FunctionName")
 fun <State : Any, Effect : Any, Command : Any, Event : Any> DefaultStore(
     initialState: State,
     reducer: Reducer<State, Effect, Event>,
     featureCommandProcessor: CommandProcessor<Command, Event>,
-    commonCommandProcessor: CompletableCommandProcessor
+    commonCommandProcessor: CompletableCommandProcessor,
+    throttlingConfig: ThrottlingConfig = ThrottlingConfig()
 ): Store<State, Effect, Event> =
     StoreImpl(
         initialState = initialState,
         reducer = reducer,
         operationProcessor = OperationProcessor(featureCommandProcessor, commonCommandProcessor),
-        stateMapper = { it }
+        stateMapper = { it },
+        throttlingConfig
     )
 
 @Suppress("FunctionName")
@@ -119,13 +137,15 @@ fun <UiState : Any, InternalState : Any, Effect : Any, Command : Any, Event : An
     reducer: Reducer<InternalState, Effect, Event>,
     featureCommandProcessor: CommandProcessor<Command, Event>,
     commonCommandProcessor: CompletableCommandProcessor,
-    stateMapper: StateMapper<InternalState, UiState>
+    stateMapper: StateMapper<InternalState, UiState>,
+    throttlingConfig: ThrottlingConfig = ThrottlingConfig()
 ): Store<UiState, Effect, Event> =
     StoreImpl(
         initialState = initialState,
         reducer = reducer,
         operationProcessor = OperationProcessor(featureCommandProcessor, commonCommandProcessor),
-        stateMapper = stateMapper
+        stateMapper = stateMapper,
+        throttlingConfig
     )
 
 

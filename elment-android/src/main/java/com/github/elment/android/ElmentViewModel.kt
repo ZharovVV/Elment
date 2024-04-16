@@ -23,6 +23,20 @@ open class ElmentViewModel<State : Any, Effect : Any, Command : Any, Event : Any
     }
 }
 
-fun <State : Any, Effect : Any, Command : Any, Event : Any> ElmentViewModel<State, Effect, Command, Event>.acceptDebounce(event: Event) {
+fun <State : Any, Effect : Any, Command : Any, Event : Any> ElmentViewModel<State, Effect, Command, Event>.acceptDebounce(
+    event: Event
+) {
     accept(event, mode = AcceptMode.DEBOUNCE)
+}
+
+fun <State : Any, Effect : Any, Command : Any, Event : Any> ElmentViewModel<State, Effect, Command, Event>.acceptDropOldest(
+    event: Event
+) {
+    accept(event, mode = AcceptMode.DROP_OLDEST)
+}
+
+fun <State : Any, Effect : Any, Command : Any, Event : Any> ElmentViewModel<State, Effect, Command, Event>.acceptThrottle(
+    event: Event
+) {
+    accept(event, mode = AcceptMode.THROTTLE)
 }
