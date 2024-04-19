@@ -1,8 +1,5 @@
-@file:OptIn(InternalElmentApi::class)
-
 package com.github.elment.core.store.internal
 
-import com.github.elment.core.optin.InternalElmentApi
 import com.github.elment.core.store.CommandProcessor
 import com.github.elment.core.store.CompletableCommandProcessor
 import com.github.elment.core.store.internal.Instruction.Cancellable
@@ -13,17 +10,17 @@ import com.github.elment.core.store.internal.Instruction.Delay
 import com.github.elment.core.store.internal.Instruction.JustExecute
 import com.github.elment.core.store.internal.Instruction.JustExecuteCompletable
 import com.github.elment.core.store.internal.Instruction.Scheduled
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -102,23 +99,19 @@ internal class CancellableInstructionProcessor<Command : Any, Event : Any> :
             }
 
             is RegisterAndExecute -> {
-                flow {
-                    coroutineScope {
-                        val job = launch {
-                            instruction.instructions.asFlow()
-                                .flatMapMerge { innerInstruction ->
-                                    processorsPool[innerInstruction]
-                                        .process(innerInstruction, processorsPool)
-                                }
-                                .collect { emit(it) }
-                        }
-                        mutex.withLock {
-                            cancellableJobs.remove(instruction.key)?.cancel()
-                            cancellableJobs[instruction.key] = job
-                        }
+                channelFlow {
+                    val job = launch(start = CoroutineStart.UNDISPATCHED) {
+                        instruction.instructions.asFlow()
+                            .flatMapMerge { innerInstruction ->
+                                processorsPool[innerInstruction]
+                                    .process(innerInstruction, processorsPool)
+                            }
+                            .collect { send(it) }
                     }
-                }.onCompletion {
-                    mutex.withLock { cancellableJobs.remove(instruction.key) }
+                    mutex.withLock {
+                        cancellableJobs.remove(instruction.key)?.cancel()
+                        cancellableJobs[instruction.key] = job
+                    }
                 }
             }
         }

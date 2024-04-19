@@ -22,6 +22,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.github.elment.sample.ui.case1.Case1Screen
+import com.github.elment.sample.ui.case3.Case3Screen
 import com.github.elment.sample.ui.navigation.MainScreenTabs
 
 @Composable
@@ -73,9 +74,7 @@ fun MainScreen() {
         ) {
             composable(MainScreenTabs.Case1.route) { Case1Screen() }
             composable(MainScreenTabs.Case2.route) { }
-            composable(MainScreenTabs.Case3.route) {
-
-            }
+            composable(MainScreenTabs.Case3.route) { Case3Screen() }
             composable(MainScreenTabs.Case4.route) {
 
             }

@@ -1,10 +1,10 @@
 package com.github.elment.sample.ui.case1
 
 import com.github.elment.android.ElmentViewModel
+import com.github.elment.core.config.ThrottlingConfig
 import com.github.elment.core.store.DefaultCommandProcessor
 import com.github.elment.core.store.DefaultCompletableCommandProcessor
 import com.github.elment.core.store.DefaultStore
-import com.github.elment.core.store.ThrottlingConfig
 
 internal class Case1ViewModel(
 

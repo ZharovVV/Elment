@@ -1,5 +1,6 @@
 package com.github.elment.core.store
 
+import com.github.elment.core.config.ThrottlingConfig
 import com.github.elment.core.store.internal.Operation
 import com.github.elment.core.store.internal.OperationProcessor
 import kotlinx.coroutines.CoroutineScope
@@ -67,8 +68,8 @@ internal class StoreImpl<UiState : Any, InternalState : Any, Effect : Any, Comma
     @OptIn(FlowPreview::class)
     private val events: Flow<Event> = merge(
         defaultUiEvents,
-        debounceUiEvents.debounce(1000),
-        throttledUiEvents.throttleFirst(1000),
+        debounceUiEvents.debounce(throttlingConfig.debounceTimeoutMillis),
+        throttledUiEvents.throttleFirst(throttlingConfig.throttlingWindowDuration),
         dropOldestUiEvents,
         internalEvents
     )
