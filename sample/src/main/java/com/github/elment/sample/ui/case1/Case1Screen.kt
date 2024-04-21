@@ -2,6 +2,7 @@ package com.github.elment.sample.ui.case1
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -52,35 +53,43 @@ fun Case1Screen() {
         ) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = "Default Accept Mode")
-            IconButton(onClick = { viewModel.accept(Increase) }) {
-                Icon(Icons.Outlined.Add, contentDescription = "")
-            }
-            IconButton(onClick = { viewModel.accept(Decrease) }) {
-                Icon(Icons.Outlined.Remove, contentDescription = "")
+            Row(horizontalArrangement = Arrangement.spacedBy(32.dp)) {
+                IconButton(onClick = { viewModel.accept(Increase) }) {
+                    Icon(Icons.Outlined.Add, contentDescription = "")
+                }
+                IconButton(onClick = { viewModel.accept(Decrease) }) {
+                    Icon(Icons.Outlined.Remove, contentDescription = "")
+                }
             }
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = "Debounce Accept Mode")
-            IconButton(onClick = { viewModel.acceptDebounce(Increase) }) {
-                Icon(Icons.Outlined.Add, contentDescription = "")
-            }
-            IconButton(onClick = { viewModel.acceptDebounce(Decrease) }) {
-                Icon(Icons.Outlined.Remove, contentDescription = "")
+            Row(horizontalArrangement = Arrangement.spacedBy(32.dp)) {
+                IconButton(onClick = { viewModel.acceptDebounce(Increase) }) {
+                    Icon(Icons.Outlined.Add, contentDescription = "")
+                }
+                IconButton(onClick = { viewModel.acceptDebounce(Decrease) }) {
+                    Icon(Icons.Outlined.Remove, contentDescription = "")
+                }
             }
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = "Throttle Accept Mode")
-            IconButton(onClick = { viewModel.acceptThrottle(Increase) }) {
-                Icon(Icons.Outlined.Add, contentDescription = "")
-            }
-            IconButton(onClick = { viewModel.acceptThrottle(Decrease) }) {
-                Icon(Icons.Outlined.Remove, contentDescription = "")
+            Row(horizontalArrangement = Arrangement.spacedBy(32.dp)) {
+                IconButton(onClick = { viewModel.acceptThrottle(Increase) }) {
+                    Icon(Icons.Outlined.Add, contentDescription = "")
+                }
+                IconButton(onClick = { viewModel.acceptThrottle(Decrease) }) {
+                    Icon(Icons.Outlined.Remove, contentDescription = "")
+                }
             }
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = "Drop Oldest Accept Mode")
-            IconButton(onClick = { viewModel.acceptDropOldest(Increase) }) {
-                Icon(Icons.Outlined.Add, contentDescription = "")
-            }
-            IconButton(onClick = { viewModel.acceptDropOldest(Decrease) }) {
-                Icon(Icons.Outlined.Remove, contentDescription = "")
+            Row(horizontalArrangement = Arrangement.spacedBy(32.dp)) {
+                IconButton(onClick = { viewModel.acceptDropOldest(Increase) }) {
+                    Icon(Icons.Outlined.Add, contentDescription = "")
+                }
+                IconButton(onClick = { viewModel.acceptDropOldest(Decrease) }) {
+                    Icon(Icons.Outlined.Remove, contentDescription = "")
+                }
             }
         }
     }

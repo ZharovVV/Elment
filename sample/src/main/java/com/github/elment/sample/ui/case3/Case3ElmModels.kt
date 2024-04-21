@@ -16,6 +16,9 @@ sealed interface Case3Event {
     data object StartTimer2 : Case3Event
     data object CancelTimer2 : Case3Event
 
+    data object ScheduleTimer2 : Case3Event
+    data object ExecuteScheduledTimer2 : Case3Event
+
     data class OnTimer2Updated(
         val timerValue: Int
     ) : Case3Event

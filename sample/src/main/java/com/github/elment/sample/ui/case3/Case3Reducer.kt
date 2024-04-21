@@ -5,6 +5,8 @@ import com.github.elment.core.store.dsl.cancel
 import com.github.elment.core.store.dsl.cancellable
 import com.github.elment.core.store.dsl.chain
 import com.github.elment.core.store.dsl.delay
+import com.github.elment.core.store.dsl.executeScheduled
+import com.github.elment.core.store.dsl.schedule
 import com.github.elment.sample.ui.case3.Case3Command.StartTimer1
 
 internal class Case3Reducer : DslReducer<Case3State, Case3Effect, Case3Command, Case3Event>() {
@@ -46,6 +48,28 @@ internal class Case3Reducer : DslReducer<Case3State, Case3Effect, Case3Command, 
             Case3Event.CancelTimer2 -> {
                 commands {
                     +cancel("timer2")
+                }
+            }
+
+
+            Case3Event.ScheduleTimer2 -> {
+                commands {
+                    +schedule("timer2") {
+                        +cancellable("timer2") {
+                            +chain {
+                                (0..10).forEach {
+                                    +delay(1000)
+                                    +Case3Command.UpdateTimer2(it)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            Case3Event.ExecuteScheduledTimer2 -> {
+                commands {
+                    +executeScheduled("timer2")
                 }
             }
 

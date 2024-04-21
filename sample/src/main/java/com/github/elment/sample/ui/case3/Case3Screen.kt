@@ -60,6 +60,14 @@ internal fun Case3Screen() {
                     Text(text = "Cancel Timer 2")
                 }
             }
+            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                Button(onClick = { viewModel.accept(Case3Event.ScheduleTimer2) }) {
+                    Text(text = "Schedule Timer 2")
+                }
+                Button(onClick = { viewModel.accept(Case3Event.ExecuteScheduledTimer2) }) {
+                    Text(text = "Execute Scheduled Timer 2")
+                }
+            }
         }
     }
 }

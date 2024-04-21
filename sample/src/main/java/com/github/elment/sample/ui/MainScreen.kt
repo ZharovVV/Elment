@@ -3,10 +3,10 @@ package com.github.elment.sample.ui
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCard
+import androidx.compose.material.icons.filled.AdsClick
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -51,9 +51,9 @@ fun MainScreen() {
                         icon = {
                             Icon(
                                 imageVector = when (tab) {
-                                    MainScreenTabs.Case1 -> Icons.Filled.Home
+                                    MainScreenTabs.Case1 -> Icons.Filled.AdsClick
                                     MainScreenTabs.Case2 -> Icons.Filled.Favorite
-                                    MainScreenTabs.Case3 -> Icons.Filled.AddCard
+                                    MainScreenTabs.Case3 -> Icons.Filled.Timer
                                     MainScreenTabs.Case4 -> Icons.Filled.Alarm
                                 },
                                 contentDescription = null
