@@ -5,7 +5,7 @@ import com.github.elment.core.store.DefaultCommandProcessor
 import com.github.elment.core.store.DefaultCompletableCommandProcessor
 import com.github.elment.core.store.DefaultStore
 
-internal class Case3ViewModel : ElmentViewModel<Case3State, Case3Effect, Case3Command, Case3Event>(
+internal class Case3ViewModel : ElmentViewModel<Case3State, Case3Event, Case3Effect, Case3Command>(
     store = DefaultStore(
         initialState = Case3State(
             timer1Value = "",

@@ -30,13 +30,13 @@ import kotlinx.coroutines.runBlocking
 typealias StateMapper<InternalState, UiState> = (internalState: InternalState) -> UiState
 
 
-internal class StoreImpl<UiState : Any, InternalState : Any, Effect : Any, Command : Any, Event : Any>(
+internal class StoreImpl<UiState : Any, InternalState : Any, Event : Any, Effect : Any, Command : Any>(
     private val initialState: InternalState,
-    private val reducer: Reducer<InternalState, Effect, Event>,
+    private val reducer: Reducer<InternalState, Event, Effect>,
     private val operationProcessor: OperationProcessor<Command, Event>,
     stateMapper: StateMapper<InternalState, UiState>,
     throttlingConfig: ThrottlingConfig
-) : Store<UiState, Effect, Event> {
+) : Store<UiState, Event, Effect> {
 
     private val storeScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
@@ -117,13 +117,13 @@ private fun <T> Flow<T>.throttleFirst(windowDuration: Long): Flow<T> = flow {
 }
 
 @Suppress("FunctionName")
-fun <State : Any, Effect : Any, Command : Any, Event : Any> DefaultStore(
+fun <State : Any, Event : Any, Effect : Any, Command : Any> DefaultStore(
     initialState: State,
-    reducer: Reducer<State, Effect, Event>,
+    reducer: Reducer<State, Event, Effect>,
     featureCommandProcessor: CommandProcessor<Command, Event>,
     commonCommandProcessor: CompletableCommandProcessor,
-    throttlingConfig: ThrottlingConfig = ThrottlingConfig()
-): Store<State, Effect, Event> =
+    throttlingConfig: ThrottlingConfig = ThrottlingConfig.DEFAULT
+): Store<State, Event, Effect> =
     StoreImpl(
         initialState = initialState,
         reducer = reducer,
@@ -133,14 +133,14 @@ fun <State : Any, Effect : Any, Command : Any, Event : Any> DefaultStore(
     )
 
 @Suppress("FunctionName")
-fun <UiState : Any, InternalState : Any, Effect : Any, Command : Any, Event : Any> StoreWithStateMapper(
+fun <UiState : Any, InternalState : Any, Event : Any, Effect : Any, Command : Any> StoreWithStateMapper(
     initialState: InternalState,
-    reducer: Reducer<InternalState, Effect, Event>,
+    reducer: Reducer<InternalState, Event, Effect>,
     featureCommandProcessor: CommandProcessor<Command, Event>,
     commonCommandProcessor: CompletableCommandProcessor,
     stateMapper: StateMapper<InternalState, UiState>,
-    throttlingConfig: ThrottlingConfig = ThrottlingConfig()
-): Store<UiState, Effect, Event> =
+    throttlingConfig: ThrottlingConfig = ThrottlingConfig.DEFAULT
+): Store<UiState, Event, Effect> =
     StoreImpl(
         initialState = initialState,
         reducer = reducer,

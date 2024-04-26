@@ -28,6 +28,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.elment.android.acceptDebounce
 import com.github.elment.android.acceptDropOldest
 import com.github.elment.android.acceptThrottle
+import com.github.elment.core.store.AcceptMode
 import com.github.elment.sample.ui.case1.Case1Event.Decrease
 import com.github.elment.sample.ui.case1.Case1Event.Increase
 
@@ -64,7 +65,7 @@ fun Case1Screen() {
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = "Debounce Accept Mode")
             Row(horizontalArrangement = Arrangement.spacedBy(32.dp)) {
-                IconButton(onClick = { viewModel.acceptDebounce(Increase) }) {
+                IconButton(onClick = { viewModel.accept(Increase, AcceptMode.DEBOUNCE) }) {
                     Icon(Icons.Outlined.Add, contentDescription = "")
                 }
                 IconButton(onClick = { viewModel.acceptDebounce(Decrease) }) {
@@ -74,7 +75,7 @@ fun Case1Screen() {
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = "Throttle Accept Mode")
             Row(horizontalArrangement = Arrangement.spacedBy(32.dp)) {
-                IconButton(onClick = { viewModel.acceptThrottle(Increase) }) {
+                IconButton(onClick = { viewModel.accept(Increase, AcceptMode.THROTTLE) }) {
                     Icon(Icons.Outlined.Add, contentDescription = "")
                 }
                 IconButton(onClick = { viewModel.acceptThrottle(Decrease) }) {
@@ -84,7 +85,7 @@ fun Case1Screen() {
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = "Drop Oldest Accept Mode")
             Row(horizontalArrangement = Arrangement.spacedBy(32.dp)) {
-                IconButton(onClick = { viewModel.acceptDropOldest(Increase) }) {
+                IconButton(onClick = { viewModel.accept(Increase, AcceptMode.DROP_OLDEST) }) {
                     Icon(Icons.Outlined.Add, contentDescription = "")
                 }
                 IconButton(onClick = { viewModel.acceptDropOldest(Decrease) }) {

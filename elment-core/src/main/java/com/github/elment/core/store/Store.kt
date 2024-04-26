@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.StateFlow
 /**
  * TODO
  */
-interface Store<State : Any, Effect : Any, Event : Any> {
+interface Store<State : Any, Event : Any, Effect : Any> {
 
     val state: StateFlow<State>
     val effects: Flow<Effect>

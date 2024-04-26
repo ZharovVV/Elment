@@ -9,7 +9,7 @@ import com.github.elment.core.store.dsl.executeScheduled
 import com.github.elment.core.store.dsl.schedule
 import com.github.elment.sample.ui.case3.Case3Command.StartTimer1
 
-internal class Case3Reducer : DslReducer<Case3State, Case3Effect, Case3Command, Case3Event>() {
+internal class Case3Reducer : DslReducer<Case3State, Case3Event, Case3Effect, Case3Command>() {
     override fun Act.reduce(event: Case3Event) {
         when (event) {
             Case3Event.StartTimer1 -> {

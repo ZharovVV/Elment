@@ -12,9 +12,9 @@ import com.github.elment.sample.models.TestEvent
 import com.github.elment.sample.models.TestState
 
 internal class TestDslReducer(
-    private val uiDslReducer: DslReducer<TestState, TestEffect, TestCommand, TestEvent.Ui>,
-    private val internalDslReducer: DslReducer<TestState, TestEffect, TestCommand, TestEvent.Internal>
-) : DslReducer<TestState, TestEffect, TestCommand, TestEvent>() {
+    private val uiDslReducer: DslReducer<TestState, TestEvent.Ui, TestEffect, TestCommand>,
+    private val internalDslReducer: DslReducer<TestState, TestEvent.Internal, TestEffect, TestCommand>
+) : DslReducer<TestState, TestEvent, TestEffect, TestCommand>() {
     override fun Act.reduce(event: TestEvent) {
         when (event) {
             is TestEvent.Ui -> uiDslReducer.delegateReduce(event)

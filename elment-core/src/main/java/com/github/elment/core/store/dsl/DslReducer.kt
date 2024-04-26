@@ -2,8 +2,8 @@ package com.github.elment.core.store.dsl
 
 import com.github.elment.core.store.Reducer
 
-abstract class DslReducer<State : Any, Effect : Any, Command : Any, Event : Any> :
-    Reducer<State, Effect, Event> {
+abstract class DslReducer<State : Any, Event : Any, Effect : Any, Command : Any> :
+    Reducer<State, Event, Effect> {
 
     final override fun reduce(
         state: State,
@@ -18,7 +18,7 @@ abstract class DslReducer<State : Any, Effect : Any, Command : Any, Event : Any>
     //Для уменьшения количества кода
     protected inner class Act(state: State) : ActBuilder<State, Effect, Command>(state) {
 
-        fun <DelegateEvent : Event> DslReducer<State, Effect, Command, DelegateEvent>.delegateReduce(
+        fun <DelegateEvent : Event> DslReducer<State, DelegateEvent, Effect, Command>.delegateReduce(
             event: DelegateEvent
         ) {
             val act = reduce(currentState, event)
