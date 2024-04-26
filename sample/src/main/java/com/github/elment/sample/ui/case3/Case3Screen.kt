@@ -42,10 +42,10 @@ internal fun Case3Screen() {
             Text(text = "Timer 1 Value")
             Text(text = state.timer1Value)
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                Button(onClick = { viewModel.accept(Case3Event.StartTimer1) }) {
+                Button(onClick = { viewModel.accept(Case3Event.OnStartTimer1ButtonClick) }) {
                     Text(text = "Start Timer 1")
                 }
-                Button(onClick = { viewModel.accept(Case3Event.CancelTimer1) }) {
+                Button(onClick = { viewModel.accept(Case3Event.OnCancelTimer1ButtonClick) }) {
                     Text(text = "Cancel Timer 1")
                 }
             }
@@ -61,10 +61,10 @@ internal fun Case3Screen() {
                 }
             }
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                Button(onClick = { viewModel.accept(Case3Event.ScheduleTimer2) }) {
+                Button(onClick = { viewModel.accept(Case3Event.OnScheduleTimer2ButtonClick) }) {
                     Text(text = "Schedule Timer 2")
                 }
-                Button(onClick = { viewModel.accept(Case3Event.ExecuteScheduledTimer2) }) {
+                Button(onClick = { viewModel.accept(Case3Event.OnExecuteScheduledTimer2ButtonClick) }) {
                     Text(text = "Execute Scheduled Timer 2")
                 }
             }

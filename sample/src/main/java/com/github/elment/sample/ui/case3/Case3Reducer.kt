@@ -1,82 +1,46 @@
 package com.github.elment.sample.ui.case3
 
-import com.github.elment.core.store.dsl.DslReducer
-import com.github.elment.core.store.dsl.cancel
-import com.github.elment.core.store.dsl.cancellable
-import com.github.elment.core.store.dsl.chain
-import com.github.elment.core.store.dsl.delay
-import com.github.elment.core.store.dsl.executeScheduled
-import com.github.elment.core.store.dsl.schedule
-import com.github.elment.sample.ui.case3.Case3Command.StartTimer1
+import com.github.elment.core.store.Act
+import com.github.elment.core.store.Reducer
+import com.github.elment.core.store.internal.Instruction
+import com.github.elment.core.store.internal.Operation
 
-internal class Case3Reducer : DslReducer<Case3State, Case3Event, Case3Effect, Case3Command>() {
-    override fun Act.reduce(event: Case3Event) {
-        when (event) {
-            Case3Event.StartTimer1 -> {
-                commands {
-                    +cancellable("timer1") {
-                        +StartTimer1
-                    }
-                }
+internal class Case3Reducer : Reducer<Case3State, Case3Event, Case3Effect> {
+    override fun reduce(state: Case3State, event: Case3Event): Act<Case3State, Case3Effect> {
+        return when (event) {
+            Case3Event.OnStartTimer1ButtonClick -> {
+                Act(
+                    state = state,
+                    effects = null,
+                    operation = Operation(
+                        instructions = listOf(
+                            Instruction.Cancellable.RegisterAndExecute(
+                                "timer1",
+                                listOf(Instruction.JustExecute(Case3Command.StartTimer1))
+                            )
+                        )
+                    )
+                )
             }
 
-            Case3Event.CancelTimer1 -> {
-                commands {
-                    +cancel("timer1")
-                }
+            Case3Event.OnCancelTimer1ButtonClick -> {
+                Act(
+                    state = state,
+                    effects = null,
+                    operation = Operation(
+                        instructions = listOf(
+                            Instruction.Cancellable.Cancel("timer1")
+                        )
+                    )
+                )
             }
 
-            is Case3Event.OnTimer1Updated -> {
-                state {
-                    copy(timer1Value = event.timerValue.toString())
-                }
-            }
-
-            Case3Event.StartTimer2 -> {
-                commands {
-                    +cancellable("timer2") {
-                        +chain {
-                            (0..10).forEach {
-                                +delay(1000)
-                                +Case3Command.UpdateTimer2(it)
-                            }
-                        }
-                    }
-                }
-            }
-
-            Case3Event.CancelTimer2 -> {
-                commands {
-                    +cancel("timer2")
-                }
-            }
-
-
-            Case3Event.ScheduleTimer2 -> {
-                commands {
-                    +schedule("timer2") {
-                        +cancellable("timer2") {
-                            +chain {
-                                (0..10).forEach {
-                                    +delay(1000)
-                                    +Case3Command.UpdateTimer2(it)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            Case3Event.ExecuteScheduledTimer2 -> {
-                commands {
-                    +executeScheduled("timer2")
-                }
-            }
-
-            is Case3Event.OnTimer2Updated -> {
-                state { copy(timer2Value = event.timerValue.toString()) }
-            }
+            Case3Event.CancelTimer2 -> TODO()
+            Case3Event.OnExecuteScheduledTimer2ButtonClick -> TODO()
+            is Case3Event.OnTimer1Updated -> TODO()
+            is Case3Event.OnTimer2Updated -> TODO()
+            Case3Event.OnScheduleTimer2ButtonClick -> TODO()
+            Case3Event.StartTimer2 -> TODO()
         }
     }
-
 }

@@ -11,10 +11,11 @@ internal class Case3ViewModel : ElmentViewModel<Case3State, Case3Event, Case3Eff
             timer1Value = "",
             timer2Value = ""
         ),
-        reducer = Case3Reducer(),
+        reducer = Case3DslReducer(),
         featureCommandProcessor = DefaultCommandProcessor(
             mapOf(
                 Case3Command.StartTimer1::class to StartTimer1Actor(),
+                Case3Command.StartTimer2::class to StartTimer2Actor(),
                 Case3Command.UpdateTimer2::class to UpdateTimer2Actor()
             )
         ),
