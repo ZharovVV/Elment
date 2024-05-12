@@ -1,6 +1,5 @@
 package com.github.elment.core.store.internal
 
-import com.github.elment.core.optin.InternalElmentApi
 import com.github.elment.core.store.CommandProcessor
 import com.github.elment.core.store.CompletableCommandProcessor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,7 +16,7 @@ internal class OperationProcessor<Command : Any, Event : Any>(
         completableCommandProcessor: CompletableCommandProcessor
     ) : this(InstructionProcessorsPool(commandProcessor, completableCommandProcessor))
 
-    @OptIn(ExperimentalCoroutinesApi::class, InternalElmentApi::class)
+    @OptIn(ExperimentalCoroutinesApi::class)
     fun process(operation: Operation): Flow<Event> =
         operation.instructions.asFlow()
             .flatMapMerge { instruction ->

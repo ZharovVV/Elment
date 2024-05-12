@@ -35,7 +35,7 @@ internal class StoreImpl<UiState : Any, InternalState : Any, Event : Any, Effect
     private val reducer: Reducer<InternalState, Event, Effect>,
     private val operationProcessor: OperationProcessor<Command, Event>,
     stateMapper: StateMapper<InternalState, UiState>,
-    throttlingConfig: ThrottlingConfig
+    throttlingConfig: ThrottlingConfig<Event>
 ) : Store<UiState, Event, Effect> {
 
     private val storeScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
@@ -68,8 +68,8 @@ internal class StoreImpl<UiState : Any, InternalState : Any, Event : Any, Effect
     @OptIn(FlowPreview::class)
     private val events: Flow<Event> = merge(
         defaultUiEvents,
-        debounceUiEvents.debounce(throttlingConfig.debounceTimeoutMillis),
-        throttledUiEvents.throttleFirst(throttlingConfig.throttlingWindowDuration),
+        debounceUiEvents.debounce(throttlingConfig.debounceTimeout),
+        throttledUiEvents.throttleFirst(throttlingConfig.throttlingWindow),
         dropOldestUiEvents,
         internalEvents
     )
@@ -105,11 +105,11 @@ internal class StoreImpl<UiState : Any, InternalState : Any, Event : Any, Effect
     }
 }
 
-private fun <T> Flow<T>.throttleFirst(windowDuration: Long): Flow<T> = flow {
+private fun <T> Flow<T>.throttleFirst(windowDuration: (T) -> Long): Flow<T> = flow {
     var lastTime = 0L
     collect { value ->
         val currentTime = System.currentTimeMillis()
-        if (currentTime - lastTime >= windowDuration) {
+        if (currentTime - lastTime >= windowDuration(value)) {
             lastTime = currentTime
             emit(value)
         }
@@ -120,14 +120,14 @@ private fun <T> Flow<T>.throttleFirst(windowDuration: Long): Flow<T> = flow {
 fun <State : Any, Event : Any, Effect : Any, Command : Any> DefaultStore(
     initialState: State,
     reducer: Reducer<State, Event, Effect>,
-    featureCommandProcessor: CommandProcessor<Command, Event>,
-    commonCommandProcessor: CompletableCommandProcessor,
-    throttlingConfig: ThrottlingConfig = ThrottlingConfig.DEFAULT
+    featureProcessor: CommandProcessor<Command, Event>,
+    commonProcessor: CompletableCommandProcessor,
+    throttlingConfig: ThrottlingConfig<Event> = ThrottlingConfig.Default
 ): Store<State, Event, Effect> =
     StoreImpl(
         initialState = initialState,
         reducer = reducer,
-        operationProcessor = OperationProcessor(featureCommandProcessor, commonCommandProcessor),
+        operationProcessor = OperationProcessor(featureProcessor, commonProcessor),
         stateMapper = { it },
         throttlingConfig
     )
@@ -136,15 +136,15 @@ fun <State : Any, Event : Any, Effect : Any, Command : Any> DefaultStore(
 fun <UiState : Any, InternalState : Any, Event : Any, Effect : Any, Command : Any> StoreWithStateMapper(
     initialState: InternalState,
     reducer: Reducer<InternalState, Event, Effect>,
-    featureCommandProcessor: CommandProcessor<Command, Event>,
-    commonCommandProcessor: CompletableCommandProcessor,
+    featureProcessor: CommandProcessor<Command, Event>,
+    commonProcessor: CompletableCommandProcessor,
     stateMapper: StateMapper<InternalState, UiState>,
-    throttlingConfig: ThrottlingConfig = ThrottlingConfig.DEFAULT
+    throttlingConfig: ThrottlingConfig<Event> = ThrottlingConfig.Default
 ): Store<UiState, Event, Effect> =
     StoreImpl(
         initialState = initialState,
         reducer = reducer,
-        operationProcessor = OperationProcessor(featureCommandProcessor, commonCommandProcessor),
+        operationProcessor = OperationProcessor(featureProcessor, commonProcessor),
         stateMapper = stateMapper,
         throttlingConfig
     )
