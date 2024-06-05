@@ -22,6 +22,12 @@ class DefaultCommandProcessor<Command : Any, Event : Any>(
 
 interface CompletableCommandProcessor {
     suspend fun process(command: CompletableCommand)
+
+    companion object Empty : CompletableCommandProcessor {
+        override suspend fun process(command: CompletableCommand) {
+            //do nothing
+        }
+    }
 }
 
 class DefaultCompletableCommandProcessor(

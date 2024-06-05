@@ -16,8 +16,8 @@ internal class Case1ViewModel(
             counterText = "0"
         ),
         reducer = Case1Reducer(),
-        featureProcessor = DefaultCommandProcessor(emptyMap()),
-        commonProcessor = DefaultCompletableCommandProcessor(
+        commandProcessor = DefaultCommandProcessor(emptyMap()),
+        completableCommandProcessor = DefaultCompletableCommandProcessor(
             mapOf(
                 Case2CompletableCommand::class to Case2CompletableActor()
             )

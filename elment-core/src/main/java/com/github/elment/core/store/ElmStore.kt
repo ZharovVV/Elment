@@ -120,14 +120,14 @@ private fun <T> Flow<T>.throttleFirst(windowDuration: (T) -> Long): Flow<T> = fl
 fun <State : Any, Event : Any, Effect : Any, Command : Any> DefaultStore(
     initialState: State,
     reducer: Reducer<State, Event, Effect>,
-    featureProcessor: CommandProcessor<Command, Event>,
-    commonProcessor: CompletableCommandProcessor,
+    commandProcessor: CommandProcessor<Command, Event>,
+    completableCommandProcessor: CompletableCommandProcessor = CompletableCommandProcessor.Empty,
     throttlingConfig: ThrottlingConfig<Event> = ThrottlingConfig.Default
 ): Store<State, Event, Effect> =
     StoreImpl(
         initialState = initialState,
         reducer = reducer,
-        operationProcessor = OperationProcessor(featureProcessor, commonProcessor),
+        operationProcessor = OperationProcessor(commandProcessor, completableCommandProcessor),
         stateMapper = { it },
         throttlingConfig
     )
@@ -136,15 +136,15 @@ fun <State : Any, Event : Any, Effect : Any, Command : Any> DefaultStore(
 fun <UiState : Any, InternalState : Any, Event : Any, Effect : Any, Command : Any> StoreWithStateMapper(
     initialState: InternalState,
     reducer: Reducer<InternalState, Event, Effect>,
-    featureProcessor: CommandProcessor<Command, Event>,
-    commonProcessor: CompletableCommandProcessor,
-    stateMapper: StateMapper<InternalState, UiState>,
-    throttlingConfig: ThrottlingConfig<Event> = ThrottlingConfig.Default
+    commandProcessor: CommandProcessor<Command, Event>,
+    completableCommandProcessor: CompletableCommandProcessor = CompletableCommandProcessor.Empty,
+    throttlingConfig: ThrottlingConfig<Event> = ThrottlingConfig.Default,
+    stateMapper: StateMapper<InternalState, UiState>
 ): Store<UiState, Event, Effect> =
     StoreImpl(
         initialState = initialState,
         reducer = reducer,
-        operationProcessor = OperationProcessor(featureProcessor, commonProcessor),
+        operationProcessor = OperationProcessor(commandProcessor, completableCommandProcessor),
         stateMapper = stateMapper,
         throttlingConfig
     )

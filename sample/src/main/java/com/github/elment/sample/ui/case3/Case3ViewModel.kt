@@ -13,14 +13,14 @@ internal class Case3ViewModel : ElmentViewModel<Case3State, Case3Event, Case3Eff
             timer2Value = ""
         ),
         reducer = Case3DslReducer(),
-        featureProcessor = DefaultCommandProcessor(
+        commandProcessor = DefaultCommandProcessor(
             mapOf(
                 Case3Command.StartTimer1::class to StartTimer1Actor(),
                 Case3Command.StartTimer2::class to StartTimer2Actor(),
                 Case3Command.UpdateTimer2::class to UpdateTimer2Actor()
             )
         ),
-        commonProcessor = DefaultCompletableCommandProcessor(emptyMap()),
+        completableCommandProcessor = DefaultCompletableCommandProcessor(emptyMap()),
         throttlingConfig = ThrottlingConfig(
             debounceTimeout = 500,
             throttlingWindow = 500
