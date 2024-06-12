@@ -10,8 +10,6 @@ android {
 
     defaultConfig {
         minSdk = 24
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
@@ -37,5 +35,12 @@ dependencies {
     api(project(":elment-core"))
     implementation(libs.coroutines.android)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    testImplementation(libs.junit)
+
+    testImplementation(platform(libs.junit5.bom))
+    testImplementation(libs.bundles.test)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }

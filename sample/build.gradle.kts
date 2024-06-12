@@ -21,8 +21,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -57,5 +55,12 @@ dependencies {
     implementation(libs.bundles.compose)
     debugImplementation(libs.compose.ui.tooling)
     implementation(libs.androidx.navigation.compose)
-    testImplementation(libs.junit)
+
+    testImplementation(platform(libs.junit5.bom))
+    testImplementation(libs.bundles.test)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }

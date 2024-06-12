@@ -11,4 +11,12 @@ java {
 
 dependencies {
     implementation(libs.coroutines.core)
+
+    testImplementation(platform(libs.junit5.bom))
+    testImplementation(libs.bundles.test)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
