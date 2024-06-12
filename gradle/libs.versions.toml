@@ -1,5 +1,6 @@
 [versions]
 agp = "8.2.1"
+atomicfu = "0.24.0"
 kotlin = "1.9.22"
 core-ktx = "1.12.0"
 androidx-lifecycle = "2.6.1"
@@ -55,6 +56,9 @@ compose-window-size = { module = "androidx.compose.material3:material3-window-si
 #coroutines
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+
+# TODO https://youtrack.jetbrains.com/issue/KT-49178/Multiplatform-plugin-is-incompatible-with-atomicfu-gradle-plugin
+kotlinx-atomicfu-plugin = { module = "org.jetbrains.kotlinx:atomicfu-gradle-plugin", version.ref = "atomicfu" }
 
 # Tests
 junit = { group = "junit", name = "junit", version.ref = "junit" }

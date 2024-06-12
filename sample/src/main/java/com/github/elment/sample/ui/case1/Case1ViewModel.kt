@@ -4,8 +4,6 @@ import com.github.elment.android.ElmentViewModel
 import com.github.elment.core.store.DefaultCommandProcessor
 import com.github.elment.core.store.DefaultCompletableCommandProcessor
 import com.github.elment.core.store.DefaultStore
-import com.github.elment.sample.ui.case2.Case2CompletableActor
-import com.github.elment.sample.ui.case2.Case2CompletableCommand
 
 internal class Case1ViewModel(
 
@@ -17,11 +15,7 @@ internal class Case1ViewModel(
         ),
         reducer = Case1Reducer(),
         commandProcessor = DefaultCommandProcessor(emptyMap()),
-        completableCommandProcessor = DefaultCompletableCommandProcessor(
-            mapOf(
-                Case2CompletableCommand::class to Case2CompletableActor()
-            )
-        ),
+        completableCommandProcessor = DefaultCompletableCommandProcessor(emptyMap()),
         throttlingConfig = Case1ThrottlingConfig()
     )
 )

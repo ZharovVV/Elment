@@ -1,9 +1,20 @@
 package com.github.elment.sample.ui.case2
 
-import com.github.elment.core.store.CompletableCommand
+internal data class Case2State(
+    val counterText: String
+)
 
-sealed interface Case2CompletableCommand : CompletableCommand {
-    data object Command1 : Case2CompletableCommand
-    data object Command2 : Case2CompletableCommand
-    data object Command3 : Case2CompletableCommand
+internal sealed interface Case2Event {
+    data object OnStartTimerButtonClick : Case2Event
+    data object OnPauseTimerButtonClick : Case2Event
+    data object OnStopTimerButtonClick : Case2Event
+    data class OnTimeTick(val value: Int) : Case2Event
+}
+
+internal sealed interface Case2Command {
+    sealed interface TimerCommand : Case2Command {
+        data object Start : TimerCommand
+        data object Pause : TimerCommand
+        data object Stop : TimerCommand
+    }
 }
