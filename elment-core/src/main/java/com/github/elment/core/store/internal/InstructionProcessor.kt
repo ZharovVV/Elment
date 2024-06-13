@@ -2,14 +2,15 @@ package com.github.elment.core.store.internal
 
 import com.github.elment.core.store.CommandProcessor
 import com.github.elment.core.store.CompletableCommandProcessor
-import com.github.elment.core.store.internal.Instruction.Cancellable
-import com.github.elment.core.store.internal.Instruction.Cancellable.Cancel
-import com.github.elment.core.store.internal.Instruction.Cancellable.RegisterAndExecute
-import com.github.elment.core.store.internal.Instruction.ChainExecute
-import com.github.elment.core.store.internal.Instruction.Delay
-import com.github.elment.core.store.internal.Instruction.JustExecute
-import com.github.elment.core.store.internal.Instruction.JustExecuteCompletable
-import com.github.elment.core.store.internal.Instruction.Scheduled
+import com.github.elment.core.store.Instruction
+import com.github.elment.core.store.Instruction.Cancellable
+import com.github.elment.core.store.Instruction.Cancellable.Cancel
+import com.github.elment.core.store.Instruction.Cancellable.RegisterAndExecute
+import com.github.elment.core.store.Instruction.ChainExecute
+import com.github.elment.core.store.Instruction.Delay
+import com.github.elment.core.store.Instruction.JustExecute
+import com.github.elment.core.store.Instruction.JustExecuteCompletable
+import com.github.elment.core.store.Instruction.Scheduled
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job

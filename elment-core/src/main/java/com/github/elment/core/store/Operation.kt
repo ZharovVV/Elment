@@ -1,4 +1,4 @@
-package com.github.elment.core.store.internal
+package com.github.elment.core.store
 
 
 data class Operation(

@@ -3,15 +3,15 @@
 package com.github.elment.core.store.dsl
 
 import com.github.elment.core.store.CompletableCommand
-import com.github.elment.core.store.internal.Instruction
-import com.github.elment.core.store.internal.Instruction.Cancellable.Cancel
-import com.github.elment.core.store.internal.Instruction.Cancellable.RegisterAndExecute
-import com.github.elment.core.store.internal.Instruction.ChainExecute
-import com.github.elment.core.store.internal.Instruction.Delay
-import com.github.elment.core.store.internal.Instruction.JustExecute
-import com.github.elment.core.store.internal.Instruction.JustExecuteCompletable
-import com.github.elment.core.store.internal.Instruction.Scheduled.ExecuteScheduled
-import com.github.elment.core.store.internal.Instruction.Scheduled.Schedule
+import com.github.elment.core.store.Instruction
+import com.github.elment.core.store.Instruction.Cancellable.Cancel
+import com.github.elment.core.store.Instruction.Cancellable.RegisterAndExecute
+import com.github.elment.core.store.Instruction.ChainExecute
+import com.github.elment.core.store.Instruction.Delay
+import com.github.elment.core.store.Instruction.JustExecute
+import com.github.elment.core.store.Instruction.JustExecuteCompletable
+import com.github.elment.core.store.Instruction.Scheduled.ExecuteScheduled
+import com.github.elment.core.store.Instruction.Scheduled.Schedule
 
 
 open class InstructionsScope<Command> {

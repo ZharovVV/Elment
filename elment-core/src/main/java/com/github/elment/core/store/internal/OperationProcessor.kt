@@ -2,6 +2,7 @@ package com.github.elment.core.store.internal
 
 import com.github.elment.core.store.CommandProcessor
 import com.github.elment.core.store.CompletableCommandProcessor
+import com.github.elment.core.store.Operation
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow

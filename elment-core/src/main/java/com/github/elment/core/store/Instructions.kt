@@ -1,6 +1,4 @@
-package com.github.elment.core.store.internal
-
-import com.github.elment.core.store.CompletableCommand
+package com.github.elment.core.store
 
 /**
  * Instruction - сущность, которая содержит информацию о том, что и как нужно выполнять.

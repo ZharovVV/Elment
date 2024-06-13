@@ -1,7 +1,6 @@
 package com.github.elment.core.store
 
 import com.github.elment.core.config.ThrottlingConfig
-import com.github.elment.core.store.internal.Operation
 import com.github.elment.core.store.internal.OperationProcessor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -1,9 +1,9 @@
 package com.github.elment.sample.ui.case3
 
 import com.github.elment.core.store.Act
+import com.github.elment.core.store.Instruction
+import com.github.elment.core.store.Operation
 import com.github.elment.core.store.Reducer
-import com.github.elment.core.store.internal.Instruction
-import com.github.elment.core.store.internal.Operation
 
 internal class Case3Reducer : Reducer<Case3State, Case3Event, Case3Effect> {
     override fun reduce(state: Case3State, event: Case3Event): Act<Case3State, Case3Effect> {

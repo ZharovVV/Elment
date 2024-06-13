@@ -1,6 +1,6 @@
 package com.github.elment.core.store.dsl
 
-import com.github.elment.core.store.internal.Operation
+import com.github.elment.core.store.Operation
 
 
 class OperationBuilder<Command> : InstructionsScope<Command>() {

@@ -1,7 +1,7 @@
 package com.github.elment.core.store.dsl
 
 import com.github.elment.core.store.Act
-import com.github.elment.core.store.internal.Operation
+import com.github.elment.core.store.Operation
 
 
 open class ActBuilder<State : Any, Effect : Any, Command : Any>(
