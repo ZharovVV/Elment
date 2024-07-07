@@ -1,7 +1,7 @@
 package com.github.elment.sample.ui.case1
 
-import com.github.elment.core.config.ThrottlingConfig
-import com.github.elment.core.config.TimeSelector
+import com.github.elment.core.store.config.ThrottlingConfig
+import com.github.elment.core.store.config.TimeSelector
 
 class Case1ThrottlingConfig : ThrottlingConfig<Case1Event> {
     override val debounceTimeout: TimeSelector<Case1Event> = { case1Event: Case1Event ->

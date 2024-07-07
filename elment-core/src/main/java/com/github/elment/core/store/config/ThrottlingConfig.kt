@@ -1,4 +1,4 @@
-package com.github.elment.core.config
+package com.github.elment.core.store.config
 
 typealias TimeSelector<T> = (T) -> Long
 

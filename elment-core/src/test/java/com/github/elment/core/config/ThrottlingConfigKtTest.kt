@@ -1,5 +1,6 @@
 package com.github.elment.core.config
 
+import com.github.elment.core.store.config.ThrottlingConfig
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
 
