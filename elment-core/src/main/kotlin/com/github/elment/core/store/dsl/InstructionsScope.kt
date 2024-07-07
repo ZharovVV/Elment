@@ -13,8 +13,7 @@ import com.github.elment.core.store.Instruction.JustExecuteCompletable
 import com.github.elment.core.store.Instruction.Scheduled.ExecuteScheduled
 import com.github.elment.core.store.Instruction.Scheduled.Schedule
 
-
-open class InstructionsScope<Command> {
+open class InstructionsScope<Command> @PublishedApi internal constructor() {
 
     @PublishedApi
     internal val instructions = mutableListOf<Instruction>()
