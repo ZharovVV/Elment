@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+    id("maven-publish")
 }
 
 android {
@@ -29,6 +30,12 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    publishing {
+        singleVariant("release") {
+            withJavadocJar()
+            withSourcesJar()
+        }
+    }
 }
 
 dependencies {
@@ -39,6 +46,23 @@ dependencies {
     testImplementation(platform(libs.junit5.bom))
     testImplementation(libs.bundles.test)
     testRuntimeOnly(libs.junit.jupiter.engine)
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("mavenAndroid") {
+                groupId = "com.github.zharovvv.elment"
+                artifactId = "elment-android"
+                version = "1.0.0-RC"
+
+                from(components["release"])
+            }
+        }
+        repositories {
+            mavenLocal()
+        }
+    }
 }
 
 tasks.withType<Test> {
